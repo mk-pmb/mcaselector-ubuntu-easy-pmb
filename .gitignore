@@ -1,0 +1,12 @@
+
+# Files to be downloaded from the web:
+/javafx-[0-9]*-ea-sdk-linux.zip
+/mcaselector-[0-9]*.jar
+
+
+# Files to be extracted from web downloads:
+/javafx-sdk-[0-9]*
+
+
+
+# Unsorted stuff (this section should be empty):

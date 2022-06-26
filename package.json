@@ -1,0 +1,27 @@
+{ "name": "mcaselector-ubuntu-easy-pmb",
+  "version": "0.1.0",
+  "description": "Simplify the installation and invocation of MCA Selector on Ubuntu.",
+  "keywords": [
+    "java",
+    "mcaselector",
+    "minecraft",
+    "ubuntu"
+  ],
+
+  "author": "M.K. (https://github.com/mk-pmb)",
+  "homepage": "https://github.com/mk-pmb/mcaselector-ubuntu-easy-pmb/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mk-pmb/mcaselector-ubuntu-easy-pmb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mk-pmb/mcaselector-ubuntu-easy-pmb/issues"
+  },
+  "contributors": [],
+
+  "private": true, "license": "ISC",
+
+
+
+  "engines": {}
+}
