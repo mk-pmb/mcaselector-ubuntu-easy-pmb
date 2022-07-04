@@ -78,7 +78,8 @@ function mse_dl_wget () {
   if [ -s "$SAVE" ]; then
     echo -n 'D: File seems to be downloaded already: '
     du --human-readable --summarize -- "$SAVE"
-    echo "D: No dowload required for $DESCR."
+    echo "D: No dowload required for $DESCR." \
+      "The Download-URL would have been: $URL"
     return 0
   fi
 
@@ -105,19 +106,36 @@ function mse_dl_wget () {
 
 function mse_dl_jfx () {
   local JFX_DIR="${CFG[java:fx:dir]}"
-  local REMOTE_DL_DIR="javafx-${MEM[java:ver:major]}-ea-sdk-linux"
+  local VER="${MEM[java:ver:major]}"
+  local REMOTE_DL_DIR="javafx-${VER}-ea-sdk-linux"
   local ZIP_DEST="$REMOTE_DL_DIR.zip"
 
-  local URL="https://gluonhq.com/download/$REMOTE_DL_DIR/"
-  URL="accept-bad-cert:$URL"
-  # ^-- 2022-06-26: Their Let's Encrypt certificate has expired.
-
-  mse_dl_wget 'JavaFX' "$ZIP_DEST" "$URL" || return $?
+  mse_dl_jfx_all_known_mirrors || return $?
 
   echo "D: Gonna unpack: $ZIP_DEST" >&2
   unzip -qo "$ZIP_DEST" "$JFX_DIR"/lib/'*' || return $?
   echo -n 'D: JavaFX has been installed: '
   du --human-readable --summarize -- "$JFX_DIR"
+}
+
+
+function mse_dl_jfx_all_known_mirrors () {
+  local W='JavaFX'
+  local U="https://gluonhq.com/download/$REMOTE_DL_DIR/"
+  local URL="accept-bad-cert:$U.zip"
+  # ^-- 2022-06-26: Their Let's Encrypt certificate has expired.
+  mse_dl_wget "$W (official download servers)" "$ZIP_DEST" "$URL" && return 0
+
+  echo "W: Download from official servers failed." \
+    "Trying inofficial mirrors." >&2
+
+  local D=
+  [ "$VER" -le 17 ] && D=20210101
+  URL="https://web.archive.org/web/${D:-99}/$U"
+  mse_dl_wget "$W (via archive.org)" "$ZIP_DEST" "$URL" && return 0
+
+  echo "E: Downloads failed from all known mirrors." >&2
+  return 8
 }
 
 

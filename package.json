@@ -1,5 +1,5 @@
 { "name": "mcaselector-ubuntu-easy-pmb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simplify the installation and invocation of MCA Selector on Ubuntu.",
   "keywords": [
     "java",
