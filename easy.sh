@@ -7,6 +7,14 @@ function mse_cli_main () {
   local SELFPATH="$(readlink -m -- "$BASH_SOURCE"/..)"
   cd -- "$SELFPATH" || return $?
 
+  local PROG_NAME='MCAselector Ubuntu Installer'
+  local README_JAVA_MAJOR_VERSION="$(grep -m 1 -oPe \
+    '^OVERRIDE_JAVA_MAJOR_VERSION=\d+(?= )' -- README.md | cut -d = -sf 2)"
+  [ "${README_JAVA_MAJOR_VERSION:-0}" -ge 10 ] || return 4$(echo E: >&2 \
+    "Failed to detect which Java version is used in the README file!" \
+    "This usually means the author botched the release of $PROG_NAME." \
+    "Please report this bug and meanwhile try an older version of $PROG_NAME.")
+
   local JAVA_CMD="${CUSTOM_JAVA_LAUNCHER:-java}"
   export JAVA_CMD
   local -A MEM=()
@@ -134,6 +142,11 @@ function mse_dl_jfx_all_known_mirrors () {
   URL="https://web.archive.org/web/${D:-99}/$U"
   mse_dl_wget "$W (via archive.org)" "$ZIP_DEST" "$URL" && return 0
 
+  echo
+  [ "$VER" == "$README_JAVA_MAJOR_VERSION" ] || echo "H: The upcoming error" \
+    "usually means that the JavaFX download URL has changed unexpectedly." \
+    "Please report this bug. Meanwhile you can retry with" \
+    "the exact Java version used in the README examples."
   echo "E: Downloads failed from all known mirrors." >&2
   return 8
 }
