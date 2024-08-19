@@ -13,8 +13,9 @@ Install
 -------
 
 * Use Ubuntu 20.04 or later.
-* Have Java v17 or later installed.
-  (The apt package should be `openjdk-17-jdk`.)
+* Have Java version 17 installed. The apt package should be `openjdk-17-jdk`.
+  * __Update 2024-08-19:__ Currently, you need exactly version 17.
+    I'll try and add support for Java v21, too.
 * Clone this repo.
 * `./easy.sh download`
 
